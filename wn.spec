@@ -6,8 +6,8 @@
 %bcond_with vhosts	# enable vhosts
 %bcond_with ssl		# enable ssl (not working)
 
-Summary:	Secure and efficient http server with advanced features
-Summary(pl):	Bezpieczny i wydajny serwer http z rozbudowanymi mo¿liwo¶ciami
+Summary:	Secure and efficient HTTP server with advanced features
+Summary(pl):	Bezpieczny i wydajny serwer HTTP z rozbudowanymi mo¿liwo¶ciami
 Name:		wn	
 Version:	2.4.6
 Release:	1
@@ -81,7 +81,7 @@ ma³ych, kartotekowych baz danych zawieraj±cych informacje o plikach
 w nim siê znajduj±cych. Pola zwi±zane z plikami to tytu³, s³owa 
 kluczowe, data wyga¶niêcia oraz dodatkowe zdefiniowane przez 
 u¿ytkownika np. autor. W przeciwieñ¶twie do innych serwerów WN domy¶lnie
-nie daje dostêpu do pliku, plik mo¿e zostaæ udostêpniony klientom http 
+nie daje dostêpu do pliku, plik mo¿e zostaæ udostêpniony klientom HTTP 
 tylko w przypadku zezwolenia na to w bazie danych.
 
 %prep
