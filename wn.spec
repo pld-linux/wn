@@ -1,3 +1,11 @@
+#
+# Todo:
+# bcond with digest and with ndbm authorization (Im not gonna do it)
+#
+%bcond_with suexec	# enable suexec
+%bcond_with vhosts	# enable vhosts
+%bcond_with ssl		# enable ssl (not working)
+
 Summary:	Secure and efficient http server with advanced features
 Summary(pl):	Bezpieczny i wydajny serwer http z rozbudowanymi mo¿liwo¶ciami
 Name:		wn	
@@ -7,22 +15,26 @@ License:	GPL
 Group:		Networking/Daemons
 Source0:	http://www.wnserver.org/%{name}-%{version}.tar.gz
 # Source0-md5:	78a850d2a814962314a4adf9c7f0d8ae
-##Patch0:		%{name}-what.patch
+Source1:	%{name}-Makefile
+Source2:	%{name}-config.h
+Source3:	%{name}.init
+Patch0:		%{name}-build.patch
 URL:		http://www.wnserver.org/
 Requires:       /etc/mime.types
-
-BuildRequires:	
-PreReq:		-
-Requires(pre,post):	-
-Requires(preun):	-
-Requires(postun):	-
+BuildRequires:	%{__perl}
+BuildRequires:  openssl-devel
+BuildRequires:	pam-devel
 Provides:       httpd = %{version}
 Provides:       webserver = %{version}
-
-Requires:	-
-Provides:	-
-Obsoletes:	-
-Conflicts:	-
+Requires(pre):  /bin/id
+Requires(pre):  /usr/bin/getgid
+Requires(pre):  /usr/sbin/groupadd
+Requires(pre):  /usr/sbin/useradd
+Requires(postun):       /usr/sbin/userdel
+Requires(postun):       /usr/sbin/groupdel
+Requires(post,preun):   /sbin/chkconfig
+Requires(post,postun):  /sbin/ldconfig
+Requires(post): fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -69,54 +81,111 @@ u¿ytkownika np. autor. W przeciwieñ¶twie do innych serwerów WN domy¶lnie
 nie daje dostêpu do pliku, plik mo¿e zostaæ udostêpniony klientom http 
 tylko w przypadku zezwolenia na to w bazie danych.
 
-#%%package subpackage
-#Summary:	-
-#ummary(pl):	-
-#%Group:		-
-
-#%%description subpackage
-
-#%%description subpackage -l pl
-
 %prep
 %setup -q
-
+%patch0 -p1
 
 %build
-%{__gettextize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure
-%{__make}
+%{__perl} configure  <<_EOF_
+_EOF_
+
+install %{SOURCE1} ./Makefile
+install %{SOURCE2} ./config.h
+
+
+%if %{with vhosts}
+sed -i -e "s/^#define USE_VIRTUAL_HOSTS.*/#define USE_VIRTUAL_HOSTS\t\(TRUE\)/" config.h
+%endif
+
+%if %{with suexec}
+sed -e "s/^#define WN_SU_EXEC.*/#define WN_SU_EXEC\t\(TRUE\)/" config.h
+%endif
+
+%{__make} CC="%{__cc}" \
+	%{?with_suexec:SUEXEC=suexec} \
+	CFLAGS="%{rpmcflags} -I../wn -I../md5"
+cd docs
+rm fdl* Gnu_License Makefile md5* 
+cd ../
 
 %install
 rm -rf $RPM_BUILD_ROOT
 # create directories if necessary
-#install -d $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3,8},%{_sbindir},%{_bindir}}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	SERVBINDIR=$RPM_BUILD_ROOT%{_sbindir} \
+	BINDIR=$RPM_BUILD_ROOT%{_bindir}
+
+install docs/man/man1/* $RPM_BUILD_ROOT%{_mandir}/man1/
+install docs/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3/
+install docs/man/man8/* $RPM_BUILD_ROOT%{_mandir}/man8/
+# This breaks short-ciruit, but what the heck, the package is 500 kb 
+# you cand do a rebuild.
+rm -rf docs/man
+
+install -d $RPM_BUILD_ROOT%{_var}/log/wn
+touch $RPM_BUILD_ROOT%{_var}/log/wn/wn_{access,error}.log
+
+install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/wn
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+
 %pre
+if [ -n "`getgid http`" ]; then
+	if [ "`getgid http`" != "51" ]; then
+		echo "Error: group http doesn't have gid=51. Correct this before installing wn." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/groupadd -g 51 -r http
+fi
+if [ -n "`id -u http 2>/dev/null`" ]; then
+	if [ "`id -u http`" != "51" ]; then
+		echo "Error: user http doesn't have uid=51. Correct this before installing wn." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/useradd -u 51 -r -d /home/services/httpd -s /bin/false -c "HTTP User" -g http http 1>&2
+fi
 
 %post
+/sbin/ldconfig
+/sbin/chkconfig --add wn
+umask 137
+touch /var/log/wn/wn_{access,error}.log
+if [ -f /var/lock/subsys/wn ]; then
+	/etc/rc.d/init.d/wn restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/wn start\" to start apache http daemon."
+fi
 
 %preun
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/wn ]; then
+		/etc/rc.d/init.d/wn stop 1>&2
+	fi
+	/sbin/chkconfig --del httpd
+fi
 
 %postun
+/sbin/ldconfig
+if [ "$1" = "0" ]; then
+	/usr/sbin/userdel http
+	/usr/sbin/groupdel http
+fi
+
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS CREDITS ChangeLog NEWS README THANKS TODO
-%attr(755,root,root) %{_bindir}/*
-%{_datadir}/%{name}
-
-%files subpackage
-%defattr(644,root,root,755)
-%doc extras/*.gz
-%{_datadir}/%{name}-ext
+%doc docs README.wnssl
+%attr(754,root,root) /etc/rc.d/init.d/wn
+%attr(755,root,root) %{_bindir}/md5
+%attr(755,root,root) %{_bindir}/wn*
+%attr(755,root,root) %{_sbindir}/wn*
+%{_mandir}/
+%attr(750,http,http) %dir %{_var}/log/wn
+%attr(640,http,http) %{_var}/log/wn/*
