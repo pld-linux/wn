@@ -20,11 +20,12 @@ Source2:	%{name}-config.h
 Source3:	%{name}.init
 Patch0:		%{name}-build.patch
 URL:		http://www.wnserver.org/
-Requires:	/etc/mime.types
-BuildRequires:	%{__perl}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
+BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.159
+%{?with_vhosts:BuildRequires: sed >= 4.0}
+Requires:	/etc/mime.types
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
@@ -104,7 +105,8 @@ sed -i -e "s/^#define USE_VIRTUAL_HOSTS.*/#define USE_VIRTUAL_HOSTS\t\(TRUE\)/" 
 sed -e "s/^#define WN_SU_EXEC.*/#define WN_SU_EXEC\t\(TRUE\)/" config.h
 %endif
 
-%{__make} CC="%{__cc}" \
+%{__make} \
+	CC="%{__cc}" \
 	%{?with_suexec:SUEXEC=suexec} \
 	CFLAGS="%{rpmcflags} -I../wn -I../md5"
 cd docs
