@@ -30,12 +30,12 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/wn ]; then
-		msg_starting "Boa httpd"
+		msg_starting "WN httpd"
 		daemon wnsd
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/wn
 	else
-		msg_already_running "Boa httpd"
+		msg_already_running "WN httpd"
 	fi
 	;;
   stop)
