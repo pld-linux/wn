@@ -22,7 +22,7 @@ Patch0:		%{name}-build.patch
 URL:		http://www.wnserver.org/
 Requires:       /etc/mime.types
 BuildRequires:	%{__perl}
-BuildRequires:  openssl-devel
+BuildRequires:  openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
 Provides:       httpd = %{version}
 Provides:       webserver = %{version}
