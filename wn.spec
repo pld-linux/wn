@@ -24,17 +24,20 @@ Requires:	/etc/mime.types
 BuildRequires:	%{__perl}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
-Provides:	httpd = %{version}
-Provides:	webserver = %{version}
+BuildRequires:	rpmbuild(macros) >= 1.159
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(post,preun):	/sbin/chkconfig
 Requires(post,postun):	/sbin/ldconfig
 Requires(post): fileutils
+Provides:	group(http)
+Provides:	httpd = %{version}
+Provides:	user(http)
+Provides:	webserver = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -174,8 +177,8 @@ fi
 %postun
 /sbin/ldconfig
 if [ "$1" = "0" ]; then
-	/usr/sbin/userdel http
-	/usr/sbin/groupdel http
+	%userremove http
+	%groupremove http
 fi
 
 
