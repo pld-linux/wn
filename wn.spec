@@ -20,20 +20,20 @@ Source2:	%{name}-config.h
 Source3:	%{name}.init
 Patch0:		%{name}-build.patch
 URL:		http://www.wnserver.org/
-Requires:       /etc/mime.types
+Requires:	/etc/mime.types
 BuildRequires:	%{__perl}
-BuildRequires:  openssl-devel >= 0.9.7d
+BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
-Provides:       httpd = %{version}
-Provides:       webserver = %{version}
-Requires(pre):  /bin/id
-Requires(pre):  /usr/bin/getgid
-Requires(pre):  /usr/sbin/groupadd
-Requires(pre):  /usr/sbin/useradd
-Requires(postun):       /usr/sbin/userdel
-Requires(postun):       /usr/sbin/groupdel
-Requires(post,preun):   /sbin/chkconfig
-Requires(post,postun):  /sbin/ldconfig
+Provides:	httpd = %{version}
+Provides:	webserver = %{version}
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
+Requires(post,preun):	/sbin/chkconfig
+Requires(post,postun):	/sbin/ldconfig
 Requires(post): fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -44,12 +44,12 @@ only with complex CGI scripts without the necessity of writing or
 using these scripts. This includes extensive security checks, full 
 text searching and conditionally served text. 
 
-Despite this extensive functionality the WN executable is 
-substantially  smaller than the CERN or NCSA servers. Both a 
-stand-alone daemon and a version intended for use under inetd are 
+Despite this extensive functionality the WN executable is
+substantially smaller than the CERN or NCSA servers. Both a
+stand-alone daemon and a version intended for use under inetd are
 provided. The inetd version is designed to minimize the use of system
-resources and it is appropriate for moderate or lightly loaded 
-servers which cannot be totally dedicated to Web serving. 
+resources and it is appropriate for moderate or lightly loaded servers
+which cannot be totally dedicated to Web serving.
 
 WN's security model is based on the use of a small flat database in 
 each directory with information about the files in that directory. 
@@ -86,7 +86,7 @@ tylko w przypadku zezwolenia na to w bazie danych.
 %patch0 -p1
 
 %build
-%{__perl} configure  <<_EOF_
+%{__perl} configure <<_EOF_
 _EOF_
 
 install %{SOURCE1} ./Makefile
