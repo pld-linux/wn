@@ -80,7 +80,7 @@ Model bezpieczeñstwa WN oparty jest na umieszczaniu w ka¿dym katalogu
 ma³ych, kartotekowych baz danych zawieraj±cych informacje o plikach 
 w nim siê znajduj±cych. Pola zwi±zane z plikami to tytu³, s³owa 
 kluczowe, data wyga¶niêcia oraz dodatkowe zdefiniowane przez 
-u¿ytkownika np. autor. W przeciwieñ¶twie do innych serwerów WN domy¶lnie
+u¿ytkownika np. autor. W przeciwieñstwie do innych serwerów WN domy¶lnie
 nie daje dostêpu do pliku, plik mo¿e zostaæ udostêpniony klientom HTTP 
 tylko w przypadku zezwolenia na to w bazie danych.
 
