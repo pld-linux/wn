@@ -163,7 +163,7 @@ touch /var/log/wn/wn_{access,error}.log
 if [ -f /var/lock/subsys/wn ]; then
 	/etc/rc.d/init.d/wn restart 1>&2
 else
-	echo "Run \"/etc/rc.d/init.d/wn start\" to start apache http daemon."
+	echo "Run \"/etc/rc.d/init.d/wn start\" to start wn HTTP daemon."
 fi
 
 %preun
