@@ -1,0 +1,28 @@
+--- wn-2.4.6/config.h.dist.orig	2004-01-19 16:50:26.777585080 +0100
++++ wn-2.4.6/config.h.dist	2004-01-19 16:50:53.592508592 +0100
+@@ -193,8 +193,8 @@
+  */
+ 
+ 
+-#define USE_FILE_LOG	(TRUE)
+-#define USE_SYSLOGD 	(FALSE)
++#define USE_FILE_LOG	(FALSE)
++#define USE_SYSLOGD 	(TRUE)
+ #define USE_NO_LOG	(FALSE)
+ /* 
+  * Set ONE AND ONLY ONE of these three to to TRUE to specify logging
+--- wn-2.4.6/configure.orig	2004-01-19 16:47:47.023871336 +0100
++++ wn-2.4.6/configure	2004-01-19 16:48:44.628114160 +0100
+@@ -643,12 +643,6 @@
+ 		"With which user's permissions should the server run? ");
+ 
+ 		( $user, $xx, $uid, $gid) = getpwnam( $user);
+-
+-		if ($uid == 0) {
+-			print "\n\tFor security reasons the server should";
+-			print " not be run as root.\n\n";
+-			$user = "";
+-		}
+ 	}
+       $wnusername = $user;
+ 

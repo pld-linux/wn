@@ -1,0 +1,185 @@
+########################################################
+##
+##    Customized Makefile (configure)
+##
+##   Makefile for the WN package release 2.4.0
+##
+##    wn-Makefile.dist-version 2.4.0
+##    (this is used to indicate backward compatibility)
+########################################################
+
+
+#
+#	Configurable Part.
+#
+#	Choice of Compiler.
+CC = gcc
+
+#
+#	Where is ranlib?
+RANLIB = ranlib
+
+#
+#	Where to put the programs
+#
+SERVBINDIR = /usr/sbin
+BINDIR = /usr/bin
+
+#
+#
+INCLUDES = -I../wn -I../md5
+
+SUEXEC =
+# To make suexec use "SUEXEC = suexec" and edit config.h 
+# You can also "make suexec" (see config.h for more info)
+
+
+CFLAGS = -O3 $(INCLUDES)
+
+#
+#	Libraries to be included.
+#
+LIBS =  -lcrypt
+SSLLIBS = -lssl -lcrypto
+LDFLAGS = 
+SSL_LDFLAGS = 
+
+#For Linux use
+#LIBS = -lcrypt
+#
+
+#For Solaris 5.X or SVR4.2 use
+#LIBS = -lsocket -lnsl
+#
+
+#For UnixWare or SVR4.2 use
+#LIBS = -lsocket -lnsl -lc
+#
+
+#For SCO use
+#LIBS = -lsocket -lsc 
+#
+
+#For FreeBSD  use
+#LIBS = -lcrypt
+#
+
+#For DYNIX use
+#LIBS = -lsocket -linet -lnsl
+#
+
+#For UXP/DS V20 use
+#LIBS = -lsocket -lnsl
+#
+
+MD5LIB = ../md5/md5lib.a
+
+all: 		md5 wnd wnsd wndex wnauth wnputh $(SUEXEC)
+install:	inst-wn inst-md5 inst-wndex inst-wnauth inst-wnputh
+wnd:		wn/wnd
+wnsd:		wn/wnsd
+md5:		md5/md5
+wndex:		wndex/wndex
+wnauth:		wnauth/wnauth
+wnputh:		wnputh/wnputh
+suexec:		suexec/suexec
+wnssl:		wn/wnssl
+
+md5/md5: config.h
+	@echo "Making md5 library"
+	(cd md5; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		BINDIR="$(BINDIR)" RANLIB="$(RANLIB)" )
+
+wn/wnd:	config.h 
+	@echo "Making wnd"
+	(cd wn; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(SERVBINDIR)" )
+
+wn/wnsd: config.h 
+	@echo "Making wnsd"
+	(cd wn; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(SERVBINDIR)" swn )
+
+
+wndex/wndex: config.h md5
+	@echo "Making wndex"
+	(cd wndex; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(BINDIR)" RANLIB="$(RANLIB)" )
+
+wnauth/wnauth: config.h md5
+	@echo "Making wnauth"
+	(cd wnauth; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(BINDIR)" )
+
+wnputh/wnputh: config.h
+	@echo "Making wnputh"
+	(cd wnputh; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		BINDIR="$(BINDIR)" )
+
+suexec/suexec: config.h
+	@echo "Making suexec"
+	(cd suexec; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(BINDIR)" )
+
+wn/wnssl:	config_ssl.h 
+	@echo "Making wnssl"
+	(cd wnssl; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) -DMAKE_WNSSL" LIBS="$(LIBS)" \
+		LDFLAGSS="$(LDFLAGS) $(SSL_LDFLAGS)" SSLLIBS="$(SSLLIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(SERVBINDIR)" wnssl )
+
+inst-wn: config.h
+	@echo "Installing wnd and wnsd"
+	(cd wn; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		BINDIR="$(SERVBINDIR)" install )
+
+inst-wndex: config.h inst-md5
+	@echo "Installing wndex"
+	(cd wndex; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(BINDIR)" RANLIB="$(RANLIB)" \
+		install )
+
+inst-wnauth: config.h inst-md5
+	@echo "Installing wnauth"
+	(cd wnauth; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		MD5LIB="$(MD5LIB)" BINDIR="$(BINDIR)" install )
+
+inst-wnputh: config.h
+	@echo "Installing wnputh"
+	(cd wnputh; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		BINDIR="$(BINDIR)" install )
+
+inst-md5: config.h
+	@echo "Installing md5"
+	(cd md5; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		BINDIR="$(BINDIR)" install )
+
+inst-wnssl: config_ssl.h
+	@echo "Installing wnssld and wnsslsd"
+	(cd wnssl; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" LIBS="$(LIBS)" \
+		BINDIR="$(SERVBINDIR)" install_wnssl )
+
+dist:	clean
+	rm -f config.h config_ssl.h Makefile *.bak lib/*~ \
+	bin/wnd bin/wnsd bin/wndex bin/wnauth bin/wnputh bin/wnssld bin/wnsslsd \
+	bin/wn_md5passwd bin/md5 bin/md5lib.a wnauth/wn_md5passwd \
+	wn/Makefile wnssl/Makefile
+
+clean:
+	@echo "Cleaning in wn"
+	(cd wn ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in wndex"
+	(cd wndex ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in md5"
+	(cd md5 ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in wnauth"
+	(cd wnauth ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in suexec"
+	(cd suexec ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in wnputh"
+	(cd wnputh ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in wnssl"
+	(cd wnssl ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@echo "Cleaning in digestauth"
+	(cd digestauth ; $(MAKE) BINDIR="$(BINDIR)" clean)
+	@rm -f *~ lib/*~
+	(cd docs; $(MAKE) clean)
