@@ -23,7 +23,7 @@ URL:		http://www.wnserver.org/
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
 BuildRequires:	perl-base
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 %{?with_vhosts:BuildRequires: sed >= 4.0}
 Requires:	/etc/mime.types
 Requires(pre):	/bin/id
@@ -138,24 +138,9 @@ install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/wn
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %pre
-if [ -n "`getgid http`" ]; then
-	if [ "`getgid http`" != "51" ]; then
-		echo "Error: group http doesn't have gid=51. Correct this before installing wn." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/groupadd -g 51 -r http
-fi
-if [ -n "`id -u http 2>/dev/null`" ]; then
-	if [ "`id -u http`" != "51" ]; then
-		echo "Error: user http doesn't have uid=51. Correct this before installing wn." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -u 51 -r -d /home/services/httpd -s /bin/false -c "HTTP User" -g http http 1>&2
-fi
+%groupadd -g 51 -r http
+%useradd -u 51 -r -d /home/services/httpd -s /bin/false -c "HTTP User" -g http http
 
 %post
 /sbin/ldconfig
