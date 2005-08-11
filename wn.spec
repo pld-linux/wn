@@ -2,9 +2,9 @@
 # Todo:
 # bcond with digest and with ndbm authorization (Im not gonna do it)
 #
-%bcond_with suexec	# enable suexec
-%bcond_with vhosts	# enable vhosts
-%bcond_with ssl		# enable ssl (not working)
+%bcond_with	suexec	# enable suexec
+%bcond_with	vhosts	# enable vhosts
+%bcond_with	ssl		# enable ssl (not working)
 
 Summary:	Secure and efficient HTTP server with advanced features
 Summary(pl):	Bezpieczny i wydajny serwer HTTP z rozbudowanymi mo¿liwo¶ciami
