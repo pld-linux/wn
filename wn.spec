@@ -66,13 +66,13 @@ to do so has been granted by entering it in this database
 %description -l pl
 WN to serwer dla protoko³u HTTP w wersji 1.1. Jego g³ówn± zalet± jest
 bezpieczeñstwo oraz wbudowana funkcjonalno¶æ, która z regu³y dostêpna
-jestjedynie dziêki rozbudowanym skryptom CGI: ró¿norakie
+jest jedynie dziêki rozbudowanym skryptom CGI: ró¿norakie
 zabezpieczenia, przeszukiwanie ca³ego tekstu oraz warunkowe
 udostêpnianie tekstu.
 
 Rozbudowane mo¿liwo¶ci nie wp³ynê³y jednak na rozmiar pliku
 wykonywalnego serwera, który pozostaje mniejszy ni¿ serwery CERN lub
-NCSA. Pakiet dostarcza zarówno wersji standalone jak i inetd serwera
+NCSA. Pakiet dostarcza zarówno wersji samodzielnej jak i inetd serwera
 WN. Ta druga zosta³a zoptymalizowana do zajmowania jak najmniejszej
 liczby zasobów i jest zalecana dla serwerów z ma³ym b±d¼ ograniczonym
 obci±¿eniem.
