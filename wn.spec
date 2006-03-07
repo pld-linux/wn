@@ -1,6 +1,5 @@
-#
-# Todo:
-# bcond with digest and with ndbm authorization (Im not gonna do it)
+# TODO:
+# - bcond with digest and with ndbm authorization (I'm not gonna do it)
 #
 %bcond_with	suexec	# enable suexec
 %bcond_with	vhosts	# enable vhosts
@@ -24,21 +23,20 @@ BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
 BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.202
-%{?with_vhosts:BuildRequires: sed >= 4.0}
-Requires:	/etc/mime.types
+%{?with_vhosts:BuildRequires:	sed >= 4.0}
+Requires(post):	fileutils
+Requires(post,postun):	/sbin/ldconfig
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/groupdel
-Requires(postun):	/usr/sbin/userdel
-Requires(post,preun):	/sbin/chkconfig
-Requires(post,postun):	/sbin/ldconfig
-Requires(post):	fileutils
+Requires:	/etc/mime.types
 Provides:	group(http)
-Provides:	httpd = %{version}
 Provides:	user(http)
-Provides:	webserver = %{version}
+Provides:	webserver
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
