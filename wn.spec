@@ -6,7 +6,7 @@
 %bcond_with	ssl	# enable ssl (not working)
 
 Summary:	Secure and efficient HTTP server with advanced features
-Summary(pl):	Bezpieczny i wydajny serwer HTTP z rozbudowanymi mo¿liwo¶ciami
+Summary(pl.UTF-8):   Bezpieczny i wydajny serwer HTTP z rozbudowanymi moÅ¼liwoÅ›ciami
 Name:		wn
 Version:	2.4.7
 Release:	1
@@ -61,26 +61,26 @@ document id. Unlike other servers, the default action for WN is to
 deny access to a file.A file can only be served if explicit permission
 to do so has been granted by entering it in this database
 
-%description -l pl
-WN to serwer dla protoko³u HTTP w wersji 1.1. Jego g³ówn± zalet± jest
-bezpieczeñstwo oraz wbudowana funkcjonalno¶æ, która z regu³y dostêpna
-jest jedynie dziêki rozbudowanym skryptom CGI: ró¿norakie
-zabezpieczenia, przeszukiwanie ca³ego tekstu oraz warunkowe
-udostêpnianie tekstu.
+%description -l pl.UTF-8
+WN to serwer dla protokoÅ‚u HTTP w wersji 1.1. Jego gÅ‚Ã³wnÄ… zaletÄ… jest
+bezpieczeÅ„stwo oraz wbudowana funkcjonalnoÅ›Ä‡, ktÃ³ra z reguÅ‚y dostÄ™pna
+jest jedynie dziÄ™ki rozbudowanym skryptom CGI: rÃ³Å¼norakie
+zabezpieczenia, przeszukiwanie caÅ‚ego tekstu oraz warunkowe
+udostÄ™pnianie tekstu.
 
-Rozbudowane mo¿liwo¶ci nie wp³ynê³y jednak na rozmiar pliku
-wykonywalnego serwera, który pozostaje mniejszy ni¿ serwery CERN lub
-NCSA. Pakiet dostarcza zarówno wersji samodzielnej jak i inetd serwera
-WN. Ta druga zosta³a zoptymalizowana do zajmowania jak najmniejszej
-liczby zasobów i jest zalecana dla serwerów z ma³ym b±d¼ ograniczonym
-obci±¿eniem.
+Rozbudowane moÅ¼liwoÅ›ci nie wpÅ‚ynÄ™Å‚y jednak na rozmiar pliku
+wykonywalnego serwera, ktÃ³ry pozostaje mniejszy niÅ¼ serwery CERN lub
+NCSA. Pakiet dostarcza zarÃ³wno wersji samodzielnej jak i inetd serwera
+WN. Ta druga zostaÅ‚a zoptymalizowana do zajmowania jak najmniejszej
+liczby zasobÃ³w i jest zalecana dla serwerÃ³w z maÅ‚ym bÄ…dÅº ograniczonym
+obciÄ…Å¼eniem.
 
-Model bezpieczeñstwa WN oparty jest na umieszczaniu w ka¿dym katalogu
-ma³ych, kartotekowych baz danych zawieraj±cych informacje o plikach
-w nim siê znajduj±cych. Pola zwi±zane z plikami to tytu³, s³owa
-kluczowe, data wyga¶niêcia oraz dodatkowe zdefiniowane przez
-u¿ytkownika np. autor. W przeciwieñstwie do innych serwerów WN
-domy¶lnie nie daje dostêpu do pliku, plik mo¿e zostaæ udostêpniony
+Model bezpieczeÅ„stwa WN oparty jest na umieszczaniu w kaÅ¼dym katalogu
+maÅ‚ych, kartotekowych baz danych zawierajÄ…cych informacje o plikach
+w nim siÄ™ znajdujÄ…cych. Pola zwiÄ…zane z plikami to tytuÅ‚, sÅ‚owa
+kluczowe, data wygaÅ›niÄ™cia oraz dodatkowe zdefiniowane przez
+uÅ¼ytkownika np. autor. W przeciwieÅ„stwie do innych serwerÃ³w WN
+domyÅ›lnie nie daje dostÄ™pu do pliku, plik moÅ¼e zostaÄ‡ udostÄ™pniony
 klientom HTTP tylko w przypadku zezwolenia na to w bazie danych.
 
 %prep
