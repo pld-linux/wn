@@ -6,7 +6,7 @@
 %bcond_with	ssl	# enable ssl (not working)
 
 Summary:	Secure and efficient HTTP server with advanced features
-Summary(pl.UTF-8):   Bezpieczny i wydajny serwer HTTP z rozbudowanymi możliwościami
+Summary(pl.UTF-8):	Bezpieczny i wydajny serwer HTTP z rozbudowanymi możliwościami
 Name:		wn
 Version:	2.4.7
 Release:	1
